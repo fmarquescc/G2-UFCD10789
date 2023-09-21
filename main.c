@@ -80,37 +80,29 @@ void print_cars(t_carro *lista, int lista_count)
     }
 }
 
+void write_cars(t_carro *lista, int lista_count)
+{
+    FILE *arquivo = fopen("cars.txt", "w");
+    
+    if (arquivo == NULL) {
+        printf("Nao foi possivel abrir o arquivo 'cars.txt'.\n");
+        return;
+    }
+  
+    for (int i = 0; i < lista_count; ++i)
+    {
+        t_carro carro = lista[i];
+        fprintf(arquivo, "%s#%s#%s#%s#%s#\n", carro.marca, carro.modelo, carro.cor, carro.combustivel, carro.matricula);
+    }
+  
+    fclose(arquivo);
+    printf("Dados do carro salvos no arquivo 'cars.txt'.\n");
+}
 
 int main(void)
 {
-#if defined(_WIN32)
-    SetConsoleOutputCP(CP_UTF8);
-#endif
-
- 
-    t_carro carro = lerCarro();
-
-    
-    FILE *arquivo = fopen("carros.txt", "w");
-
-    
-    if (arquivo == NULL) {
-        printf("Nao foi possivel abrir o arquivo 'carros.txt'.\n");
-        return 1;
-    }
-
-  
-    fprintf(arquivo, "Dados do Carro:\n");
-    fprintf(arquivo, "Marca: %s\n", carro.marca);
-    fprintf(arquivo, "Modelo: %s\n", carro.modelo);
-    fprintf(arquivo, "Cor: %s\n", carro.cor);
-    fprintf(arquivo, "Combustível: %s\n", carro.combustivel);
-    fprintf(arquivo, "Matrícula: %s\n", carro.matricula);
-
-  
-    fclose(arquivo);
-
-    printf("Dados do carro salvos no arquivo 'carros.txt'.\n");
-
+    #if defined(_WIN32)
+        SetConsoleOutputCP(CP_UTF8);
+    #endif
     return 0;
 }
