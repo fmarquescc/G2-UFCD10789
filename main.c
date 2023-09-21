@@ -46,11 +46,49 @@ void impCarro(t_carro c)
 
 }
 
+void menuAbrirficheiro(){    
+    
+    int op1;
+    printf("Carregar dados do ficheiro")
+    printf("1 - Abrir Ficheiro ");
+    printf("2 - Não Ficheiro");
+    printf("0 - Sair")
+    
+    switch (op1)
+    {
+    case '1'
+
+        break;
+    case '2'
+    
+        break;
+    }
+
+} 
+
+void menuViaturas(){
+    int op2
+    printf(">>>>>>>>MENU GESTAO LISTA VIATURAS<<<<<<<<"); 
+    printf(" 1 - Lista de viaturas");
+    printf(" 2 - Adicionar viaturas");
+    printf(" 0 - Sair");
+
+    case '1'
+
+        break;
+    case '2'
+
+        break;
+}
+
+
 
 int main(void)
 {
     #if defined(_WIN32)
         SetConsoleOutputCP(CP_UTF8);
     #endif
+    
+
     return 0;
 }
