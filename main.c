@@ -4,7 +4,6 @@
 #include "windows.h"
 #endif
 
-
 typedef struct 
 {
     char marca[15];
@@ -12,8 +11,7 @@ typedef struct
     char cor[15];
     char combustivel[15];
     char matricula[15];
-
-}t_carro;
+} t_carro;
 
 t_carro lerCarro()
 {
@@ -28,14 +26,13 @@ t_carro lerCarro()
     scanf("%s",&c.cor);
     printf("\nCombustível: ");
     scanf( "%s",&c.combustivel);
-    printf ("\nMatrícula: ");
-    scanf ( "%s",&c.matricula);
+    printf("\nMatrícula: ");
+    scanf( "%s",&c.matricula);
     return c;
-    }
+}
 
 void impCarro(t_carro c)
 {
-    
     printf("Dados do carro:\n");
 
     printf("Marca: %s",c.marca);
@@ -43,7 +40,6 @@ void impCarro(t_carro c)
     printf("\nCor: %s",c.cor);
     printf("\nCombustível: %s",c.combustivel);
     printf("\nMatrícula: %s",c.matricula);
-
 }
 
 
