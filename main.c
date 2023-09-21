@@ -42,6 +42,44 @@ void impCarro(t_carro c)
     printf("\nMatrícula: %s",c.matricula);
 }
 
+int read_cars(t_carro *lista)
+{
+    FILE *f = fopen("cars.txt", "r");
+
+    int lista_count = 0;
+    if (f != NULL)
+    {
+        char marca[15];
+        char modelo[15];
+        char cor[15];
+        char combustivel[15];
+        char matricula[15];
+        while (fscanf(f, "%[^#]#%[^#]#%[^#]#%[^#]#%[^#]#", marca, modelo, cor, combustivel, matricula) != EOF)
+        {
+            strcpy(lista[lista_count].marca, marca);
+            strcpy(lista[lista_count].modelo, modelo);
+            strcpy(lista[lista_count].cor, cor);
+            strcpy(lista[lista_count].combustivel, combustivel);
+            strcpy(lista[lista_count].matricula, matricula);
+            lista_count++;
+        }
+        fclose(f);
+    }
+
+    return lista_count;
+}
+
+void print_cars(t_carro *lista, int lista_count)
+{
+    printf("| Marca           | Modelo          | Cor             | Combustível     | Matricula       |\n");
+    printf("|-----------------|-----------------|-----------------|-----------------|-----------------|\n");
+    for (int i = 0; i < lista_count; ++i)
+    {
+        t_carro carro = lista[i];
+        printf("| %15s | %15s | %15s | %15s | %15s |\n", carro.marca, carro.modelo, carro.cor, carro.combustivel, carro.matricula);
+    }
+}
+
 
 int main(void)
 {
