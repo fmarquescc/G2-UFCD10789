@@ -45,8 +45,34 @@ void impCarro(t_carro c)
 
 int main(void)
 {
-    #if defined(_WIN32)
-        SetConsoleOutputCP(CP_UTF8);
-    #endif
+#if defined(_WIN32)
+    SetConsoleOutputCP(CP_UTF8);
+#endif
+
+ 
+    t_carro carro = lerCarro();
+
+    
+    FILE *arquivo = fopen("carros.txt", "w");
+
+    
+    if (arquivo == NULL) {
+        printf("Nao foi possivel abrir o arquivo 'carros.txt'.\n");
+        return 1;
+    }
+
+  
+    fprintf(arquivo, "Dados do Carro:\n");
+    fprintf(arquivo, "Marca: %s\n", carro.marca);
+    fprintf(arquivo, "Modelo: %s\n", carro.modelo);
+    fprintf(arquivo, "Cor: %s\n", carro.cor);
+    fprintf(arquivo, "Combustível: %s\n", carro.combustivel);
+    fprintf(arquivo, "Matrícula: %s\n", carro.matricula);
+
+  
+    fclose(arquivo);
+
+    printf("Dados do carro salvos no arquivo 'carros.txt'.\n");
+
     return 0;
 }
