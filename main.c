@@ -48,32 +48,75 @@ char menuAbrirficheiro() {
     printf("1 - Abrir Ficheiro\n");
     printf("2 - Não Ficheiro\n");
     printf("0 - Sair\n");
-    printf("> ");
-    fflush(stdin);
-    scanf("%c", &op);
+    
+    do
+    {
+        printf("> ");
+        fflush(stdin);
+        scanf("%c", &op);
+
+        if (op >= '0' && op <= '2')
+        {
+            break;
+        }
+        else
+        {
+            printf("Erro: valor inválido\n");
+        }
+    }
+    while (1);
+
     return op;
-} 
+}
 
 char menuQuererSalvar() {    
     char op;
     printf("Queres salvar os dados no ficheiro\n");
     printf("1 - Sim\n");
     printf("0 - Não\n");
-    printf("> ");
-    fflush(stdin);
-    scanf("%c", &op);
+
+    do
+    {
+        printf("> ");
+        fflush(stdin);
+        scanf("%c", &op);
+
+        if (op >= '0' && op <= '1')
+        {
+            break;
+        }
+        else
+        {
+            printf("Erro: valor inválido\n");
+        }
+    }
+    while (1);
     return op;
 } 
 
 char menuViaturas() {
     char op;
-    printf(">>>>>>>>MENU GESTAO LISTA VIATURAS<<<<<<<<\n");
-    printf(" 1 - Lista de viaturas\n");
-    printf(" 2 - Adicionar viaturas\n");
+    printf(">>>>>>>> MENU GESTAO LISTA VIATURAS <<<<<<<<\n");
+    printf(" 1 - Listar viaturas\n");
+    printf(" 2 - Adicionar viatura\n");
+    printf(" 3 - Remover viatura\n");
     printf(" 0 - Sair\n");
-    printf("> ");
-    fflush(stdin);
-    scanf("%c", &op);
+    do
+    {
+        printf("> ");
+        fflush(stdin);
+        scanf("%c", &op);
+
+        if (op >= '0' && op <= '3')
+        {
+            break;
+        }
+        else
+        {
+            printf("Erro: valor inválido\n");
+        }
+    }
+    while (1);
     return op;
 }
 
@@ -89,7 +132,7 @@ int read_cars(t_carro *lista)
         char cor[15];
         char combustivel[15];
         char matricula[15];
-        while (fscanf(f, "%[^#]#%[^#]#%[^#]#%[^#]#%[^#]#", marca, modelo, cor, combustivel, matricula) != EOF)
+        while (fscanf(f, "%[^#]#%[^#]#%[^#]#%[^#]#%[^#]#\n", marca, modelo, cor, combustivel, matricula) != EOF)
         {
             strcpy(lista[lista_count].marca, marca);
             strcpy(lista[lista_count].modelo, modelo);
@@ -106,20 +149,24 @@ int read_cars(t_carro *lista)
 
 void print_cars(t_carro *lista, int lista_count)
 {
+    fflush(stdin);
     if (lista_count > 0)
     {
+        printf(">>>>>> Lista de carros (%d) <<<<\n\n", lista_count);
         printf("| Marca           | Modelo          | Cor             | Combustível     | Matricula       |\n");
         printf("|-----------------|-----------------|-----------------|-----------------|-----------------|\n");
         for (int i = 0; i < lista_count; ++i)
         {
             t_carro carro = lista[i];
-            printf("| %15s | %15s | %15s | %15s | %15s |\n", carro.marca, carro.modelo, carro.cor, carro.combustivel, carro.matricula);
+            printf("| %15s | %15s | %15s | %15s | %15s |", carro.marca, carro.modelo, carro.cor, carro.combustivel, carro.matricula);
+            printf("\n");
         }
     }
     else
     {
         printf("Sem carros!\n");
     }
+    printf("\n");
 }
 
 void write_cars(t_carro *lista, int lista_count)
@@ -151,6 +198,37 @@ void clear_screen()
     #endif
 }
 
+int search_car_idx(t_carro *lista, int lista_count)
+{
+    char opt[15];
+    printf("Qual a matrícula do carro? ");
+    fflush(stdin);
+    scanf("%s", opt);
+
+    for (int i = 0; i < lista_count; ++i)
+    {
+        if (strcmp(opt, lista[i].matricula) == 0)
+        {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+void remove_car(int car_idx, t_carro *lista, int lista_count)
+{
+    if (lista_count > 1) {
+        for (int j = lista_count - 1; j >= car_idx && j - 1 != 0; --j) {
+            strcpy(lista[j - 1].marca, lista[j].marca);
+            strcpy(lista[j - 1].modelo, lista[j].modelo);
+            strcpy(lista[j - 1].cor, lista[j].cor);
+            strcpy(lista[j - 1].combustivel, lista[j].combustivel);
+            strcpy(lista[j - 1].matricula, lista[j].matricula);
+        }
+    }
+}
+
 int main(void)
 {
     #if defined(_WIN32)
@@ -174,23 +252,35 @@ int main(void)
     do {
         clear_screen();
         op = menuViaturas();
+        clear_screen();
 
         if (op == '1')
         {
-            clear_screen();
             print_cars(lista, lista_count);
         }
         else if (op == '2')
         {
-            clear_screen();
             t_carro car = lerCarro();
             lista[lista_count++] = car;
             printf("\nCarro foi adicionado!\n\n");
             impCarro(car);
         }
+        else if (op == '3')
+        {
+            int idx = search_car_idx(lista, lista_count);
+            if (idx != -1)
+            {
+                remove_car(idx, lista, lista_count);
+                --lista_count;
+                printf("\nCarro removido!\n");
+            }
+            else
+            {
+                printf("\nCarro não existe!\n");
+            }
+        }
         else
         {
-            clear_screen();
             op = menuQuererSalvar();
             if (op == '1')
             {
