@@ -19,15 +19,15 @@ t_carro lerCarro()
 
     printf("### Dados do Carro ###");
     printf("\nMarca: ");
-    scanf("%s", &c.marca);
+    scanf("%s", c.marca);
     printf("\nModelo: ");
-    scanf("%s",&c.modelo );
+    scanf("%s", c.modelo );
     printf("\nCor: ");
-    scanf("%s",&c.cor);
+    scanf("%s", c.cor);
     printf("\nCombustível: ");
-    scanf( "%s",&c.combustivel);
+    scanf("%s", c.combustivel);
     printf("\nMatrícula: ");
-    scanf( "%s",&c.matricula);
+    scanf("%s", c.matricula);
     return c;
 }
 
