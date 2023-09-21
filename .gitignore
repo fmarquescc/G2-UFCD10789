@@ -1,4 +1,4 @@
-*/**/.exe
+*.exe
 .DS_Store
 bin
 obj
