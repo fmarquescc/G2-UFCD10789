@@ -42,41 +42,40 @@ void impCarro(t_carro c)
     printf("\nMatrícula: %s",c.matricula);
 }
 
-void menuAbrirficheiro(){    
-    
-    int op1;
-    printf("Carregar dados do ficheiro")
-    printf("1 - Abrir Ficheiro ");
-    printf("2 - Não Ficheiro");
-    printf("0 - Sair")
-    
-    switch (op1)
-    {
-    case '1'
-
-        break;
-    case '2'
-    
-        break;
-    }
-
+char menuAbrirficheiro() {    
+    char op;
+    printf("Carregar dados do ficheiro\n");
+    printf("1 - Abrir Ficheiro\n");
+    printf("2 - Não Ficheiro\n");
+    printf("0 - Sair\n");
+    printf("> ");
+    fflush(stdin);
+    scanf("%c", &op);
+    return op;
 } 
 
-void menuViaturas(){
-    int op2
-    printf(">>>>>>>>MENU GESTAO LISTA VIATURAS<<<<<<<<"); 
-    printf(" 1 - Lista de viaturas");
-    printf(" 2 - Adicionar viaturas");
-    printf(" 0 - Sair");
+char menuQuererSalvar() {    
+    char op;
+    printf("Queres salvar os dados no ficheiro\n");
+    printf("1 - Sim\n");
+    printf("0 - Não\n");
+    printf("> ");
+    fflush(stdin);
+    scanf("%c", &op);
+    return op;
+} 
 
-    case '1'
-
-        break;
-    case '2'
-
-        break;
+char menuViaturas() {
+    char op;
+    printf(">>>>>>>>MENU GESTAO LISTA VIATURAS<<<<<<<<\n");
+    printf(" 1 - Lista de viaturas\n");
+    printf(" 2 - Adicionar viaturas\n");
+    printf(" 0 - Sair\n");
+    printf("> ");
+    fflush(stdin);
+    scanf("%c", &op);
+    return op;
 }
-
 
 int read_cars(t_carro *lista)
 {
@@ -107,12 +106,19 @@ int read_cars(t_carro *lista)
 
 void print_cars(t_carro *lista, int lista_count)
 {
-    printf("| Marca           | Modelo          | Cor             | Combustível     | Matricula       |\n");
-    printf("|-----------------|-----------------|-----------------|-----------------|-----------------|\n");
-    for (int i = 0; i < lista_count; ++i)
+    if (lista_count > 0)
     {
-        t_carro carro = lista[i];
-        printf("| %15s | %15s | %15s | %15s | %15s |\n", carro.marca, carro.modelo, carro.cor, carro.combustivel, carro.matricula);
+        printf("| Marca           | Modelo          | Cor             | Combustível     | Matricula       |\n");
+        printf("|-----------------|-----------------|-----------------|-----------------|-----------------|\n");
+        for (int i = 0; i < lista_count; ++i)
+        {
+            t_carro carro = lista[i];
+            printf("| %15s | %15s | %15s | %15s | %15s |\n", carro.marca, carro.modelo, carro.cor, carro.combustivel, carro.matricula);
+        }
+    }
+    else
+    {
+        printf("Sem carros!\n");
     }
 }
 
@@ -128,11 +134,21 @@ void write_cars(t_carro *lista, int lista_count)
     for (int i = 0; i < lista_count; ++i)
     {
         t_carro carro = lista[i];
-        fprintf(arquivo, "%s#%s#%s#%s#%s#\n", carro.marca, carro.modelo, carro.cor, carro.combustivel, carro.matricula);
+        fprintf(arquivo, "%s#%s#%s#%s#%s#", carro.marca, carro.modelo, carro.cor, carro.combustivel, carro.matricula);
+        if (i + 1 < lista_count) fprintf(arquivo, "\n");
     }
   
     fclose(arquivo);
     printf("Dados do carro salvos no arquivo 'cars.txt'.\n");
+}
+
+void clear_screen()
+{
+    #if defined(_WIN32)
+        system("cls");
+    #else
+        system("clear");
+    #endif
 }
 
 int main(void)
@@ -140,7 +156,52 @@ int main(void)
     #if defined(_WIN32)
         SetConsoleOutputCP(CP_UTF8);
     #endif
-    
+
+    t_carro lista[32];
+    int lista_count = 0;
+
+    char op = menuAbrirficheiro();
+
+    if (op == '0')
+    {
+        return 0;
+    }
+    else if (op == '1')
+    {
+        lista_count = read_cars(lista);
+    }
+
+    do {
+        clear_screen();
+        op = menuViaturas();
+
+        if (op == '1')
+        {
+            clear_screen();
+            print_cars(lista, lista_count);
+        }
+        else if (op == '2')
+        {
+            clear_screen();
+            t_carro car = lerCarro();
+            lista[lista_count++] = car;
+            printf("\nCarro foi adicionado!\n\n");
+            impCarro(car);
+        }
+        else
+        {
+            clear_screen();
+            op = menuQuererSalvar();
+            if (op == '1')
+            {
+                write_cars(lista, lista_count);
+            }
+            return 0;
+        }
+
+        fflush(stdin);
+        getchar();
+    } while (1);
 
     return 0;
 }
